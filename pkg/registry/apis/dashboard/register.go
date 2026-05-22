@@ -585,13 +585,13 @@ func (b *DashboardsAPIBuilder) validateVariableCreate(ctx context.Context, a adm
 		return fmt.Errorf("error getting variable meta accessor: %w", err)
 	}
 
-	folder := accessor.GetFolder()
+	folderUID := accessor.GetFolder()
 
-	if err := validateVariableMetadataName(variable.GetName(), getVariableName(variable.Spec), folder); err != nil {
+	if err := validateVariableMetadataName(variable.GetName(), getVariableName(variable.Spec), folderUID); err != nil {
 		return apierrors.NewBadRequest(err.Error())
 	}
 
-	if !a.IsDryRun() && !folder.IsRootFolderUID(folder) {
+	if !a.IsDryRun() && !folder.IsRootFolderUID(folderUID) {
 		id, err := identity.GetRequester(ctx)
 		if err != nil {
 			return fmt.Errorf("error getting requester: %w", err)
